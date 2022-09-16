@@ -1,25 +1,31 @@
 package pl.martyna.bakula.coursesscraper;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.List;
+@Component
+public class ScheduledTasks {
 
+    private CoursesRepository coursesRepository;
 
-@RestController
-public class CoursesController {
+    public ScheduledTasks(CoursesRepository coursesRepository) {
+        this.coursesRepository = coursesRepository;
+    }
 
-    @CrossOrigin
-    @GetMapping
-    public List<CourseView> coursesScraper() {
+//parametry Schedulara do modyfikacji
+    @Scheduled(cron = "30 28,30 * * * *")
+    public List<CourseEntity> coursesScraper() {
         final String urlCategory =
                 "https://helion.pl/kategorie/kursy/programowanie";
-        List <CourseView> courses = new ArrayList<>();
+        List <CourseEntity> courses = new ArrayList<>();
         try {
             final Document document = Jsoup.connect(urlCategory).get();
 
@@ -28,8 +34,8 @@ public class CoursesController {
                 if (element.select(".long-title").text().equals("")) {
                     continue;
                 } else {
-//                    final String urlPhoto =
-//                            element.select(".lazy").attr("src");
+                    final int id =
+                            element.select(".price").attr("id").hashCode();
                     final String title =
                             element.select(".full-title-tooltip").text();
                     final String author =
@@ -42,19 +48,19 @@ public class CoursesController {
                     final String courseUrlModify = "https:" + courseUrl;
                     Document addInformation = Jsoup.connect(courseUrlModify).get();
                     String urlPhoto = addInformation.select(".cover img").attr("src");
-                    //urlPhoto = urlPhoto.substring(urlPhoto.indexOf("src="+5), urlPhoto.indexOf("width"+7));
-                    CourseView courseView = new CourseView(urlPhoto, title, author, price, courseUrl, courseUrlModify);
-                    courses.add(courseView);
+                    CourseEntity courseEntity = new CourseEntity(author, title, price, courseUrlModify, urlPhoto);
+                    courses.add(courseEntity);
 
 //                    final Document documentForOneCourse = Jsoup.connect(courseUrlModify).get();
 //                    final String courseTime =
 //                            documentForOneCourse.select(".details-box").text();
 //                    System.out.println("czas kursu: " + courseTime.trim().substring(courseTime.indexOf("trwania:") + 8, courseTime.indexOf("Format:")));
 //                    System.out.println("");
+
                 }
-
             }
-
+            coursesRepository.deleteAll();
+            coursesRepository.saveAll(courses);
         } catch (Exception ex) {
             ex.printStackTrace();
         }

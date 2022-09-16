@@ -5,15 +5,13 @@ class CourseView {
     private final String title;
     private final String author;
     private final String price;
-    private final String courseUrl;
     private final String courseUrlModify;
 
-    public CourseView(String urlPhoto, String title, String author, String price, String courseUrl, String courseUrlModify) {
+    public CourseView(String urlPhoto, String title, String author, String price, String courseUrlModify) {
         this.urlPhoto = urlPhoto;
         this.title = title;
         this.author = author;
         this.price = price;
-        this.courseUrl = courseUrl;
         this.courseUrlModify = courseUrlModify;
     }
 
@@ -31,10 +29,6 @@ class CourseView {
 
     public String getPrice() {
         return price;
-    }
-
-    public String getCourseUrl() {
-        return courseUrl;
     }
 
     public String getCourseUrlModify() {
