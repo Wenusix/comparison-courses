@@ -21,7 +21,7 @@ public class ScheduledTasks {
     }
 
 //parametry Schedulara do modyfikacji
-    @Scheduled(cron = "30 28,30 * * * *")
+    @Scheduled(cron = "40 46 * * * *")
     public List<CourseEntity> coursesScraper() {
         final String urlCategory =
                 "https://helion.pl/kategorie/kursy/programowanie";
@@ -48,7 +48,7 @@ public class ScheduledTasks {
                     final String courseUrlModify = "https:" + courseUrl;
                     Document addInformation = Jsoup.connect(courseUrlModify).get();
                     String urlPhoto = addInformation.select(".cover img").attr("src");
-                    CourseEntity courseEntity = new CourseEntity(sourceId, author, title, price, courseUrlModify, urlPhoto);
+                    CourseEntity courseEntity = new CourseEntity(sourceId, SourceType.HELIOS, author, title, price, courseUrlModify, urlPhoto);
                     courses.add(courseEntity);
 
 //                    final Document documentForOneCourse = Jsoup.connect(courseUrlModify).get();

@@ -1,6 +1,6 @@
 package pl.martyna.bakula.coursesscraper;
 
-enum SourceCourse {
+enum SourceType {
     UDEMY,
     HELIOS,
     STREFA_KURSOW,

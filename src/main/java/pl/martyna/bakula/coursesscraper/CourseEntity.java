@@ -11,6 +11,8 @@ public class CourseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private int sourceId;
+    @Enumerated(EnumType.STRING)
+    private SourceType sourceType;
     private String author;
     private String title;
     private String price;
@@ -20,8 +22,9 @@ public class CourseEntity {
     @OneToMany(mappedBy = "course")
     private Set<CourseHistoryEntity> courseHistory;
 
-    public CourseEntity(int sourceId, String author, String title, String price, String courseUrlModify, String urlPhoto) {
+    public CourseEntity(int sourceId, SourceType sourceType, String author, String title, String price, String courseUrlModify, String urlPhoto) {
         this.sourceId = sourceId;
+        this.sourceType = sourceType;
         this.author = author;
         this.title = title;
         this.price = price;
