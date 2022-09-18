@@ -10,8 +10,8 @@ public class CourseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+    private int sourceId;
     private String author;
-
     private String title;
     private String price;
     private String courseUrlModify;
@@ -20,7 +20,8 @@ public class CourseEntity {
     @OneToMany(mappedBy = "course")
     private Set<CourseHistoryEntity> courseHistory;
 
-    public CourseEntity(String author, String title, String price, String courseUrlModify, String urlPhoto) {
+    public CourseEntity(int sourceId, String author, String title, String price, String courseUrlModify, String urlPhoto) {
+        this.sourceId = sourceId;
         this.author = author;
         this.title = title;
         this.price = price;
@@ -34,6 +35,10 @@ public class CourseEntity {
 
     public Integer getId() {
         return id;
+    }
+
+    public int getSourceId() {
+        return sourceId;
     }
 
     public String getAuthor() {

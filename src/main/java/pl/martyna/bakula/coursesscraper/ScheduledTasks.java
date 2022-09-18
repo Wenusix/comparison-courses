@@ -34,7 +34,7 @@ public class ScheduledTasks {
                 if (element.select(".long-title").text().equals("")) {
                     continue;
                 } else {
-                    final int id =
+                    final int sourceId =
                             element.select(".price").attr("id").hashCode();
                     final String title =
                             element.select(".full-title-tooltip").text();
@@ -48,7 +48,7 @@ public class ScheduledTasks {
                     final String courseUrlModify = "https:" + courseUrl;
                     Document addInformation = Jsoup.connect(courseUrlModify).get();
                     String urlPhoto = addInformation.select(".cover img").attr("src");
-                    CourseEntity courseEntity = new CourseEntity(author, title, price, courseUrlModify, urlPhoto);
+                    CourseEntity courseEntity = new CourseEntity(sourceId, author, title, price, courseUrlModify, urlPhoto);
                     courses.add(courseEntity);
 
 //                    final Document documentForOneCourse = Jsoup.connect(courseUrlModify).get();
