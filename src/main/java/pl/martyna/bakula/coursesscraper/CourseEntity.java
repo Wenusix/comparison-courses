@@ -1,6 +1,7 @@
 package pl.martyna.bakula.coursesscraper;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -8,32 +9,53 @@ import java.util.Set;
 public class CourseEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
     private int sourceId;
     @Enumerated(EnumType.STRING)
     private SourceType sourceType;
     private String author;
     private String title;
-    private String price;
-    private String courseUrlModify;
-    private String urlPhoto;
+    private double price;
+    private String url;
+    private String image;
+    private double courseTime;
+    @Column(length = 50000)
+    private String description;
+    @Column(length = 50000)
+    private String topics;
 
-    @OneToMany(mappedBy = "course")
-    private Set<CourseHistoryEntity> courseHistory;
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "group_id")
+    private CourseGroupEntity group;
 
-    public CourseEntity(int sourceId, SourceType sourceType, String author, String title, String price, String courseUrlModify, String urlPhoto) {
+    @OneToMany(mappedBy = "course", cascade = CascadeType.ALL)
+    private Set<LabelEntity> labels = new HashSet<>();
+
+    public CourseEntity(int sourceId, SourceType sourceType, String author, String title, double price, String url, String image, double courseTime, String description, String topics) {
         this.sourceId = sourceId;
         this.sourceType = sourceType;
         this.author = author;
         this.title = title;
         this.price = price;
-        this.courseUrlModify = courseUrlModify;
-        this.urlPhoto = urlPhoto;
+        this.url = url;
+        this.image = image;
+        this.courseTime = courseTime;
+        this.description = description;
+        this.topics = topics;
     }
 
     public CourseEntity() {
 
+    }
+
+
+    public void setGroup(CourseGroupEntity group) {
+        this.group = group;
+    }
+
+    public CourseGroupEntity getGroup() {
+        return group;
     }
 
     public Integer getId() {
@@ -52,19 +74,56 @@ public class CourseEntity {
         return title;
     }
 
-    public String getPrice() {
+    public double getPrice() {
         return price;
     }
 
-    public String getCourseUrlModify() {
-        return courseUrlModify;
+    public String getUrl() {
+        return url;
     }
 
-    public String getUrlPhoto() {
-        return urlPhoto;
+    public String getImage() {
+        return image;
     }
 
-    public Set<CourseHistoryEntity> getCourseHistory() {
-        return courseHistory;
+    public String getDescription() {
+        return description;
+    }
+
+
+    public void setAuthor(String author) {
+        this.author = author;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
+
+    public double getCourseTime() {
+        return courseTime;
+    }
+
+    public String getTopics() {
+        return topics;
+    }
+
+    public SourceType getSourceType() {
+        return sourceType;
+    }
+
+    public Set<LabelEntity> getLabels() {
+        return labels;
     }
 }
