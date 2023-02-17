@@ -826,3 +826,6 @@ body{--wp--preset--color--black: #000000;--wp--preset--color--cyan-bluish-gray: 
 .wp-block-embed{margin: 0 0 1em 0;}
 .wp-block-image{margin: 0 0 1em 0;}
 .wp-block-navigation a:not(.wp-element-button){color: inherit;}
+ol{
+    list-style: disc;
+}

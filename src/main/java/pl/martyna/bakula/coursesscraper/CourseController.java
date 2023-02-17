@@ -35,10 +35,13 @@ public class CourseController {
         for(CourseEntity courseEntity : coursesList){
             final CourseGroupEntity group = courseEntity.getGroup();
             if(group != null){
-                final CourseView courseView = group.getCourses()
+                final Set<CourseEntity> groupCourses = group.getCourses();
+                final CourseView courseView = groupCourses
                         .stream()
                         .max(Comparator.comparingInt(v -> v.getSourceType().getPriority()))
-                        .map(v -> new CourseView(v.getId(), v.getImage(), v.getTitle(), v.getAuthor(), v.getPrice(), v.getUrl(), v.getDescription(), v.getTopics(), v.getCourseTime()))
+                        .map(v -> new CourseView(v.getId(), v.getImage(), v.getTitle(), v.getAuthor(), groupCourses.stream()
+                                .map(CourseEntity::getPrice).mapToDouble(a -> a).min().getAsDouble(),
+                                v.getUrl(), v.getDescription(), v.getTopics(), v.getCourseTime()))
                         .orElseThrow();
                 courses.putIfAbsent(courseView.getId(), courseView);
             }
@@ -61,10 +64,12 @@ public class CourseController {
         for(CourseEntity courseEntity : entities){
             final CourseGroupEntity group = courseEntity.getGroup();
             if(group != null){
+                final Set<CourseEntity> groupCourses = group.getCourses();
                 final CourseView courseView = group.getCourses()
                         .stream()
                         .max(Comparator.comparingInt(v -> v.getSourceType().getPriority()))
-                        .map(v -> new CourseView(v.getId(), v.getImage(), v.getTitle(), v.getAuthor(), v.getPrice(), v.getUrl(), v.getDescription(), v.getTopics(), v.getCourseTime()))
+                        .map(v -> new CourseView(v.getId(), v.getImage(), v.getTitle(), v.getAuthor(), groupCourses.stream()
+                                .map(CourseEntity::getPrice).mapToDouble(a -> a).min().getAsDouble(), v.getUrl(), v.getDescription(), v.getTopics(), v.getCourseTime()))
                         .orElseThrow();
                 courses.putIfAbsent(courseView.getId(), courseView);
             }

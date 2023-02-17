@@ -4,7 +4,7 @@ import java.util.List;
 
 class CourseViewDetail {
     private final int id;
-    private final SourceType sourceType;
+    private final String sourceType;
     private final String image;
     private final String title;
     private final String author;
@@ -17,7 +17,7 @@ class CourseViewDetail {
 
     public CourseViewDetail(int id, SourceType sourceType, String image, String title, String author, double price, String url, String description, String topics, double courseTime, List<GroupElementView> groups) {
         this.id = id;
-        this.sourceType = sourceType;
+        this.sourceType = sourceType.getName();
         this.image = image;
         this.title = title;
         this.author = author;
@@ -69,20 +69,20 @@ class CourseViewDetail {
         return groups;
     }
 
-    public SourceType getSourceType() {
+    public String getSourceType() {
         return sourceType;
     }
 }
 class GroupElementView {
     private final int id;
     private final String url;
-    private final SourceType sourceType;
+    private final String sourceType;
     private final double price;
 
     public GroupElementView(int id, String url, SourceType sourceType, double price) {
         this.id = id;
         this.url = url;
-        this.sourceType = sourceType;
+        this.sourceType = sourceType.getName();
         this.price = price;
     }
 
@@ -94,7 +94,7 @@ class GroupElementView {
         return url;
     }
 
-    public SourceType getSourceType() {
+    public String getSourceType() {
         return sourceType;
     }
 
